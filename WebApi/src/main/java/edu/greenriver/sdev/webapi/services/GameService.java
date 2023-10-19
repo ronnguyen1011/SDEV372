@@ -9,7 +9,11 @@ import java.util.Optional;
 
 @Service
 public class GameService {
-    private final List<Game> games = new ArrayList<>();
+    private final List<Game> games = new ArrayList<>(List.of(
+            new Game("Pubg", "Battle royale game", "FPS", 0),
+            new Game("Minecraft", "Sandbox game", "Adventure", 15.99),
+            new Game("The Witcher 3", "Action RPG", "Adventure", 40.99)
+    ));
     private final int gameId = 1;
     public void createGame(Game game){
         games.add(game);
