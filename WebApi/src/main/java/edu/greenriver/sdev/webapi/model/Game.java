@@ -1,6 +1,7 @@
 package edu.greenriver.sdev.webapi.model;
 
 public class Game {
+    private static int nextId = 0;
     private int id;
     private String title;
     private String description;
@@ -8,6 +9,7 @@ public class Game {
     private double price;
 
     public Game(String title, String description, String platform, double price) {
+        this.id = nextId++;
         this.title = title;
         this.description = description;
         this.platform = platform;

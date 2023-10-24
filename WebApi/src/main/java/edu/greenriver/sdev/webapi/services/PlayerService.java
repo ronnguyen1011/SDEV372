@@ -1,5 +1,6 @@
 package edu.greenriver.sdev.webapi.services;
 
+import edu.greenriver.sdev.webapi.model.Game;
 import edu.greenriver.sdev.webapi.model.Player;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +10,16 @@ import java.util.Optional;
 
 @Service
 public class PlayerService {
-    private List<Player> players = new ArrayList<>();
-    private int nextId = 1;
+    private List<Player> players = new ArrayList<>(List.of(
+            new Player("Newbie", 100, 1),
+            new Player("Average", 500, 5),
+            new Player("Pro", 1000, 10)
+    ));
 
     public Player createPlayer(String username, int score, int level) {
         Player player = new Player(username, score, level);
-        player.setId(nextId++);
+        int id = players.size();
+        player.setId(id);
         players.add(player);
         return player;
     }
