@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Ron Nguyen
+ * @version 1.0
+ * This is a player class service that handle CRUD methods.
+ */
+
+
 @Service
 public class PlayerService {
     private List<Player> players = new ArrayList<>(List.of(

@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * @author Ron Nguyen
+ * @version 1.0
+ * This is a game service layer will handle the CRUD methods.
+ */
+
 @Service
 public class GameService {
     private List<Game> games = new ArrayList<>(List.of(

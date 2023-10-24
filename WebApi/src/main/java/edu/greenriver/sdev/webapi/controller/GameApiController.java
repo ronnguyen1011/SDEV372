@@ -11,6 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Ron Nguyen
+ * @version 1.0
+ * This is a controller for game API that track
+ * CRUD game and player in the record
+ */
+
 @RestController
 public class GameApiController {
     private final GameService gameService;

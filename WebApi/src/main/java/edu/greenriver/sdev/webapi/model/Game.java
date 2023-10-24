@@ -8,6 +8,13 @@ public class Game {
     private String platform;
     private double price;
 
+    /**
+     * @author Ron Nguyen
+     * @version 1.0
+     * This is game class have title, description, platform, price.
+     */
+
+
     public Game(String title, String description, String platform, double price) {
         this.id = nextId++;
         this.title = title;

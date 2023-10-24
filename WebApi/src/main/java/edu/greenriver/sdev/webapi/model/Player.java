@@ -1,11 +1,19 @@
 package edu.greenriver.sdev.webapi.model;
 
+/**
+ * @author Ron Nguyen
+ * @version 1.0
+ * This is player class have username, score , and level field.
+ */
+
+
 public class Player {
     private static int nextId = 0;
     private int id;
     private String username;
     private int score;
     private int level;
+
 
     public Player(String username, int score, int level) {
         this.id = nextId++;
