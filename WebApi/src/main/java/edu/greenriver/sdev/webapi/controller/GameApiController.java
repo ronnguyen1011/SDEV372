@@ -4,6 +4,7 @@ import edu.greenriver.sdev.webapi.model.Game;
 import edu.greenriver.sdev.webapi.model.Player;
 import edu.greenriver.sdev.webapi.services.GameService;
 import edu.greenriver.sdev.webapi.services.PlayerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,25 +32,40 @@ public class GameApiController {
     }
 
     @PostMapping("/games")
-    public Game createGame(@RequestBody Game game) {
-        return gameService.createGame(game.getTitle(), game.getDescription(), game.getPlatform(), game.getPrice());
+    public ResponseEntity<?> createGame(@RequestBody Game game) {
+        if (game.getTitle() == null || game.getDescription() == null || game.getPlatform() == null || game.getPrice() <= 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            Game createdGame = gameService.createGame(game.getTitle(), game.getDescription(), game.getPlatform(), game.getPrice());
+            return new ResponseEntity<>(createdGame, HttpStatus.CREATED);
+        }
     }
 
+
     @PostMapping("/players")
-    public Player createPlayer(@RequestBody Player player) {
-        return playerService.createPlayer(player.getUsername(), player.getScore(), player.getLevel());
+    public ResponseEntity<?> createPlayer(@RequestBody Player player) {
+        if (player.getUsername() == null || player.getScore() < 0 || player.getLevel() < 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            Player createdPlayer = playerService.createPlayer(player.getUsername(), player.getScore(), player.getLevel());
+            return new ResponseEntity<>(createdPlayer, HttpStatus.CREATED);
+        }
     }
+
 
     @GetMapping("/games/{gameId}")
     public ResponseEntity<Game> getGameById(@PathVariable int gameId) {
         Optional<Game> game = gameService.getGameById(gameId);
-        return game.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return game.map(g -> new ResponseEntity<>(g, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
     }
 
     @GetMapping("/players/{playerId}")
     public ResponseEntity<Player> getPlayerById(@PathVariable int playerId) {
         Optional<Player> player = playerService.getPlayerById(playerId);
-        return player.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return player.map(g -> new ResponseEntity<>(g, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/games/{id}")
@@ -62,11 +78,12 @@ public class GameApiController {
             game.setDescription(updatedGame.getDescription());
             game.setPlatform(updatedGame.getPlatform());
             game.setPrice(updatedGame.getPrice());
-            return ResponseEntity.ok(game);
+            return new ResponseEntity<>(game, HttpStatus.OK);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 
     @PutMapping("/players/{id}")
     public ResponseEntity<Player> editPlayer(@PathVariable int id, @RequestBody Player updatedPlayer) {
@@ -77,27 +94,27 @@ public class GameApiController {
             player.setUsername(updatedPlayer.getUsername());
             player.setScore(updatedPlayer.getScore());
             player.setLevel(updatedPlayer.getLevel());
-            return ResponseEntity.ok(player);
+            return new ResponseEntity<>(player, HttpStatus.OK);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/games/{gameId}")
     public ResponseEntity<Void> deleteGame(@PathVariable int gameId) {
         if (gameService.deleteGame(gameId)) {
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/players/{playerId}")
     public ResponseEntity<Void> deletePlayer(@PathVariable int playerId) {
         if (playerService.deletePlayer(playerId)) {
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
